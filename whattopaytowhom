@@ -1,0 +1,185 @@
+#!/usr/bin/env python
+
+# Ahmet Cetinkaya, 2016
+
+import numpy as np
+import numpy.linalg as la
+import scipy.optimize as op
+import sys
+
+
+def vec(M):
+    """ Vectorize matrix M """
+    (n, m) = np.shape(M)
+    v = np.zeros(n * m)
+    for j in range(m):
+        for i in range(n):
+            v[j * n + i] = M[i, j]
+
+    return v
+
+
+def mat(v, n):
+    """ Transform vector v into a matrix with n rows """
+    m = np.int(np.shape(v)[0]/ (n + 0.0))
+    M = np.matrix(np.zeros((n, m)))
+    for j in range(m):
+        for i in range(n):
+            M[i, j] = v[j * n + i]
+
+    return M
+
+
+def nonnegative_solution(A, b):
+    """ Find solution x with nonnegative entries to the problem b = Ax """
+    (n, m) = np.shape(A)
+
+    def eqcons(vB):
+        B = mat(vB, m)
+        return vec(A * B * b - b)
+
+    def ineqcons(vB):
+        B = mat(vB, m)
+        return vec(B * b)
+
+    cons = ({'type': 'eq', 'fun': eqcons}, {'type': 'ineq', 'fun': ineqcons})
+
+    B0 = la.pinv(A)
+    B = mat(op.minimize(lambda vB: 0, vec(B0), method='SLSQP', constraints=cons).x, m)
+
+    return B * b
+
+
+def remaining_payments(payments):
+    """ Given payments, return how much should be payed more."""
+    avg = np.average(payments)
+    return (np.ones(len(payments)) * avg) - payments
+
+
+def indices_where(arr, fun):
+    """ Find indices of elements e of array arr for which fun(e) returns True. """
+    indices = []
+    for i in range(len(arr)):
+        if fun(arr[i]):
+            indices.append(i)
+
+    return indices
+
+
+def repay_matrix(payments):
+    """ Given initial payments payments, return a matrix where (i, j) entry
+        indicates how much the ith person should pay the jth person. """
+    x = remaining_payments(payments)
+    RepayMatrix = np.matrix(np.zeros((len(payments), len(payments))))
+    xp = indices_where(x, lambda e: e > 0)
+    xn = indices_where(x, lambda e: e < 0)
+
+    for i in range(len(xp)):
+        for j in range(len(xn)):
+            if x[xp[i]] <= -x[xn[j]]:
+                RepayMatrix[xp[i], xn[j]] = x[xp[i]]
+                x[xn[j]] += x[xp[i]]
+                x[xp[i]] = 0
+
+    xp = indices_where(x, lambda e: e > 0)
+    xn = indices_where(x, lambda e: e < 0)
+    nop = len(xp)
+    non = len(xn)
+
+    if nop * non > 0: # if not nothing to solve
+        n = nop + non
+        m = nop * non
+        A = np.matrix(np.zeros((n, m)))
+        b = np.matrix(np.zeros((n, 1)))
+
+        for i in range(nop):
+            b[i] = 1.0
+            for j in range(non):
+                A[i, i * non + j] = 1.0
+
+        for i in range(non):
+            b[i + nop] = -x[xn[i]]
+            for j in range(nop):
+                A[i + nop, j * non + i] = x[xp[j]]
+
+        solution = nonnegative_solution(A, b)
+        for i in range(nop):
+            for j in range(non):
+                if RepayMatrix[xp[i], xn[j]] == 0.0:
+                    RepayMatrix[xp[i], xn[j]] = solution[i * non + j] * x[xp[i]]
+
+    return RepayMatrix
+
+def print_instructions(people, payments, unit=""):
+    """ A number of people (given by list people) made payments (indicated by numpy array payments)
+        in some money unit (unit), print what they should do now."""
+    print("Initially")
+    for i in range(len(payments)):
+        print("  {} payed {:.5f} {}".format(people[i], payments[i], unit))
+
+    print("")
+    print("Total: {:.5f} {}".format(np.sum(payments), unit))
+    print("")
+
+    space = " "
+    if len(unit) == 0:
+        space = ""
+
+    RepayMatrix = repay_matrix(payments)
+    if np.sum(RepayMatrix) > 0.0:
+        print("Each person should have paid {:.5f}{}{}, but that didn't work".format(np.average(payments), space, unit))
+        print("")
+        print("Now")
+        n = np.shape(RepayMatrix)[0]
+        for i in range(n):
+            for j in range(n):
+                if RepayMatrix[i, j] > 0:
+                    print("  {} should pay {:.5f}{}{} to {}".format(people[i], RepayMatrix[i, j], space, unit, people[j]))
+
+
+def get_people_and_payments(filename):
+    """ Get people and payments from data file filename. File should be something like:
+        Name1 Food 4000
+        Name2 Drinks 2000
+        Name3 Food 1000
+        Name1 Transportation 2000"""
+    raw_data = np.genfromtxt(filename, dtype=None)
+    people = []
+    payments_list = []
+    if len(raw_data[0]) == 1:
+        # no name given in the data file
+        for i in range(len(raw_data)):
+            people.append("{}th person".format(i+1))
+            payments_list.append(raw_data[i][0])
+    else:
+        last_column_index = len(raw_data[0]) - 1
+        for i in range(len(raw_data)):
+            person = raw_data[i][0].decode("utf-8")
+            if person not in people:
+                people.append(person)
+                payments_list.append(raw_data[i][last_column_index])
+            else:
+                j = people.index(person)
+                payments_list[j] = payments_list[j] + raw_data[i][last_column_index]
+
+    payments = np.array(payments_list)
+
+    return (people, payments)
+
+
+def calculate():
+    """ Calculate repayments of a number of people to reach average after initial unequal payments. """
+    arg_len = len(sys.argv)
+    if arg_len == 1:
+        print("Example usage:")
+        print("  whattopaytowhom initial_payments.txt")
+    elif arg_len == 2:
+        (people, payments) = get_people_and_payments(sys.argv[1])
+        print_instructions(people, payments)
+    else:
+        unit = sys.argv[2]
+        (people, payments) = get_people_and_payments(sys.argv[1])
+        print_instructions(people, payments, unit)
+
+
+calculate()
