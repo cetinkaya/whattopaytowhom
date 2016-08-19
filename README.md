@@ -30,3 +30,24 @@ Now
   Name2 should pay 1000.00000 to Name1
   Name3 should pay 2000.00000 to Name1
 ```
+
+We can also give the money unit as a command line argument:
+
+`./whattopaytowho initial_payments.txt yen`
+
+which results in:
+
+```
+Initially
+  Name1 payed 6000.00000 yen
+  Name2 payed 2000.00000 yen
+  Name3 payed 1000.00000 yen
+
+Total: 9000.00000 yen
+
+Each person should have paid 3000.00000 yen, but that didn't work
+
+Now
+  Name2 should pay 1000.00000 yen to Name1
+  Name3 should pay 2000.00000 yen to Name1
+```
