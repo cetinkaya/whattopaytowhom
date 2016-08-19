@@ -12,7 +12,7 @@ Name1 Transportation 2000
 
 Run `whattopaytowhom` passing `initial_payments.txt` as command line argument:
 
-`./whattopaytowho initial_payments.txt`
+`./whattopaytowhom initial_payments.txt`
 
 The result indicates who should pay what amount to whom so that in the end initial total amount is equally shared among people:
 
@@ -33,7 +33,7 @@ Now
 
 We can also give the money unit as a command line argument:
 
-`./whattopaytowho initial_payments.txt yen`
+`./whattopaytowhom initial_payments.txt yen`
 
 which results in:
 
