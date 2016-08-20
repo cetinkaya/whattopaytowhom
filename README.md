@@ -1,6 +1,7 @@
 # whattopaytowhom
 Calculate repayments of a number of people to reach average after initial unequal payments.
 
+### Example usage
 Initial payments are provided with a data file. For instance, put the following in `initial_payments.txt`:
 
 ```
@@ -10,7 +11,7 @@ Name3 Food 1000
 Name1 Transportation 2000
 ```
 
-Run `whattopaytowhom` passing `initial_payments.txt` as command line argument:
+Here in each row the first column represents a person and the last column represents a payment made by that person. There may be multiple rows that indicate different payments from the same person. Now run `whattopaytowhom` passing `initial_payments.txt` as command line argument:
 
 `./whattopaytowhom initial_payments.txt`
 
@@ -50,4 +51,36 @@ Each person should have paid 3000.00000 yen, but that didn't work
 Now
   Name2 should pay 1000.00000 yen to Name1
   Name3 should pay 2000.00000 yen to Name1
+```
+
+#### Data with single column
+If the initial data payments data file has single column, each row is considered to be the initial payment of a different person. For instance, if the `initial_payments_single_column.txt` is given by:
+
+```
+1000
+3000
+5000
+2000
+6000
+```
+
+then `./whattopaytowhom initial_payments_single_column.txt` returns:
+
+```
+Initially
+  Person #1 payed 1000.00000
+  Person #2 payed 3000.00000
+  Person #3 payed 5000.00000
+  Person #4 payed 2000.00000
+  Person #5 payed 6000.00000
+
+Total: 17000.00000
+
+Each person should have paid 3400.00000, but that didn't work
+
+Now
+  Person #1 should pay 2400.00000 to Person #5
+  Person #2 should pay 400.00000 to Person #3
+  Person #4 should pay 1200.00000 to Person #3
+  Person #4 should pay 200.00000 to Person #5
 ```
