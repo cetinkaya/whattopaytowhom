@@ -146,11 +146,11 @@ def get_people_and_payments(filename):
     raw_data = np.genfromtxt(filename, dtype=None)
     people = []
     payments_list = []
-    if len(raw_data[0]) == 1:
+    if len(np.shape(raw_data)) == 1:
         # no name given in the data file
         for i in range(len(raw_data)):
-            people.append("{}th person".format(i+1))
-            payments_list.append(raw_data[i][0])
+            people.append("Person #{}".format(i+1))
+            payments_list.append(raw_data[i])
     else:
         last_column_index = len(raw_data[0]) - 1
         for i in range(len(raw_data)):
