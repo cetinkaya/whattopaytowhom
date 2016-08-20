@@ -15,7 +15,7 @@ Here in each row the first column represents a person and the last column repres
 
 `./whattopaytowhom initial_payments.txt`
 
-The result indicates who should pay what amount to whom so that in the end initial total amount is equally shared among all:
+The result indicates who should pay what amount to whom so that in the end the initial total amount is equally shared among all:
 
 ```
 Initially
@@ -54,7 +54,7 @@ Now
 ```
 
 #### Data with single column
-If the initial data payments data file has single column, each row is considered to be the initial payment of a different person. For instance, if the `initial_payments_single_column.txt` is given by:
+If the initial payments data file has a single column, then each row is considered to be the initial payment of a different person. For instance, if the `initial_payments_single_column.txt` is given by:
 
 ```
 1000
