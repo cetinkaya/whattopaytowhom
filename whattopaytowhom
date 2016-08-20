@@ -115,10 +115,10 @@ def print_instructions(people, payments, unit=""):
         in some money unit (unit), print what they should do now."""
     print("Initially")
     for i in range(len(payments)):
-        print("  {} payed {:.5f} {}".format(people[i], payments[i], unit))
+        print("  {} payed {:.2f} {}".format(people[i], payments[i], unit))
 
     print("")
-    print("Total: {:.5f} {}".format(np.sum(payments), unit))
+    print("Total: {:.2f} {}".format(np.sum(payments), unit))
     print("")
 
     space = " "
@@ -127,14 +127,14 @@ def print_instructions(people, payments, unit=""):
 
     RepayMatrix = repay_matrix(payments)
     if np.sum(RepayMatrix) > 0.0:
-        print("Each person should have paid {:.5f}{}{}, but that didn't work".format(np.average(payments), space, unit))
+        print("Each person should have paid {:.2f}{}{}, but that didn't work".format(np.average(payments), space, unit))
         print("")
         print("Now")
         n = np.shape(RepayMatrix)[0]
         for i in range(n):
             for j in range(n):
                 if RepayMatrix[i, j] > 0:
-                    print("  {} should pay {:.5f}{}{} to {}".format(people[i], RepayMatrix[i, j], space, unit, people[j]))
+                    print("  {} should pay {:.2f}{}{} to {}".format(people[i], RepayMatrix[i, j], space, unit, people[j]))
 
 
 def get_people_and_payments(filename):

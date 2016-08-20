@@ -19,17 +19,17 @@ The result indicates who should pay what amount to whom so that in the end initi
 
 ```
 Initially
-  Name1 payed 6000.00000
-  Name2 payed 2000.00000
-  Name3 payed 1000.00000
+  Name1 payed 6000.00
+  Name2 payed 2000.00
+  Name3 payed 1000.00
 
-Total: 9000.00000
+Total: 9000.00
 
-Each person should have paid 3000.00000, but that didn't work
+Each person should have paid 3000.00, but that didn't work
 
 Now
-  Name2 should pay 1000.00000 to Name1
-  Name3 should pay 2000.00000 to Name1
+  Name2 should pay 1000.00 to Name1
+  Name3 should pay 2000.00 to Name1
 ```
 
 We can also give the money unit as a command line argument:
@@ -40,17 +40,17 @@ which results in:
 
 ```
 Initially
-  Name1 payed 6000.00000 yen
-  Name2 payed 2000.00000 yen
-  Name3 payed 1000.00000 yen
+  Name1 payed 6000.00 yen
+  Name2 payed 2000.00 yen
+  Name3 payed 1000.00 yen
 
-Total: 9000.00000 yen
+Total: 9000.00 yen
 
-Each person should have paid 3000.00000 yen, but that didn't work
+Each person should have paid 3000.00 yen, but that didn't work
 
 Now
-  Name2 should pay 1000.00000 yen to Name1
-  Name3 should pay 2000.00000 yen to Name1
+  Name2 should pay 1000.00 yen to Name1
+  Name3 should pay 2000.00 yen to Name1
 ```
 
 #### Data with single column
@@ -68,19 +68,19 @@ then `./whattopaytowhom initial_payments_single_column.txt` returns:
 
 ```
 Initially
-  Person #1 payed 1000.00000
-  Person #2 payed 3000.00000
-  Person #3 payed 5000.00000
-  Person #4 payed 2000.00000
-  Person #5 payed 6000.00000
+  Person #1 payed 1000.00
+  Person #2 payed 3000.00
+  Person #3 payed 5000.00
+  Person #4 payed 2000.00
+  Person #5 payed 6000.00
 
-Total: 17000.00000
+Total: 17000.00
 
-Each person should have paid 3400.00000, but that didn't work
+Each person should have paid 3400.00, but that didn't work
 
 Now
-  Person #1 should pay 2400.00000 to Person #5
-  Person #2 should pay 400.00000 to Person #3
-  Person #4 should pay 1200.00000 to Person #3
-  Person #4 should pay 200.00000 to Person #5
+  Person #1 should pay 2400.00 to Person #5
+  Person #2 should pay 400.00 to Person #3
+  Person #4 should pay 1200.00 to Person #3
+  Person #4 should pay 200.00 to Person #5
 ```
