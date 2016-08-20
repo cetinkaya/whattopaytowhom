@@ -84,3 +84,6 @@ Now
   Person #4 should pay 1200.00 to Person #3
   Person #4 should pay 200.00 to Person #5
 ```
+
+#### Requirements
+whattopaytowhom requires python with numpy package.
