@@ -14,7 +14,7 @@ Run `whattopaytowhom` passing `initial_payments.txt` as command line argument:
 
 `./whattopaytowhom initial_payments.txt`
 
-The result indicates who should pay what amount to whom so that in the end initial total amount is equally shared among people:
+The result indicates who should pay what amount to whom so that in the end initial total amount is equally shared among all:
 
 ```
 Initially
