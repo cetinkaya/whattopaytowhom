@@ -110,6 +110,7 @@ def repay_matrix(payments):
 
     return RepayMatrix
 
+
 def print_instructions(people, payments, unit=""):
     """ A number of people (given by list people) made payments (indicated by numpy array payments)
         in some money unit (unit), print what they should do now."""
